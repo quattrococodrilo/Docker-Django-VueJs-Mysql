@@ -45,11 +45,12 @@ DJANGO_APPS: list = [
 
 THIRDPARTY_APPS: list = [
     'rest_framework',
+    'django_extensions',
 ]
 
-APP_MODULES: list = []
+APP_APPS: list = []
 
-INSTALLED_APPS: list = DJANGO_APPS + THIRDPARTY_APPS + APP_MODULES
+INSTALLED_APPS: list = DJANGO_APPS + THIRDPARTY_APPS + APP_APPS
 
 INSTALLED_APPS: list = [
     'django.contrib.admin',

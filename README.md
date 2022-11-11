@@ -12,3 +12,12 @@ For testing I am using SQLite3, you can change it in backend.app.config.settings
 `docker-compose build`: creates a images.
 
 `docker-compose up`: start project.
+
+## Preinstalled packages
+
+Python:
+
+- djangorestframework
+- requests
+- shell_plus
+- ipython
