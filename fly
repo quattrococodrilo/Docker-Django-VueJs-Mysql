@@ -31,7 +31,8 @@ if test -t 1; then
 fi
 
 function display_help {
-    echo "QuattrocLabs Manager"
+    echo "--------------------"
+    echo "Fly Manager"
     echo "--------------------"
     echo
     echo "${YELLOW}Usage:${NC}" >&2
@@ -40,12 +41,27 @@ function display_help {
     echo "Unknown commands are passed to the docker-compose binary."
     echo
     echo "${YELLOW}docker-compose Commands:${NC}"
-    echo "  ${GREEN}manage up${NC}        Start the application"
-    echo "  ${GREEN}manage up -d${NC}     Start the application in the background"
-    echo "  ${GREEN}manage stop${NC}      Stop the application"
-    echo "  ${GREEN}manage restart${NC}   Restart the application"
-    echo "  ${GREEN}manage ps${NC}        Display the status of all containers"
+    echo "  ${GREEN}manage up${NC}          Start the application"
+    echo "  ${GREEN}manage up -d${NC}       Start the application in the background"
+    echo "  ${GREEN}manage stop${NC}        Stop the application"
+    echo "  ${GREEN}manage restart${NC}     Restart the application"
+    echo "  ${GREEN}manage ps${NC}          Display the status of all containers"
     echo
+    echo "${YELLOW}Pip Commands:${NC}"
+    echo "  ${GREEN}fly pip ...${NC}        Run pip command"
+    echo
+    echo "${YELLOW}Django Manager Commands:${NC}"
+    echo "  ${GREEN}fly manager ...${NC}    Run manager command"
+    echo
+    echo "${YELLOW}NPM Commands:${NC}"
+    echo "  ${GREEN}fly npm ...${NC}       Run a npm command"
+    echo "  ${GREEN}fly npx ...${NC}       Run a npx command"
+    echo
+    echo "${YELLOW}Database Commands:${NC}"
+    echo "  ${GREEN}fly mysql${NC}         Start a MySQL CLI session within the 'mysql' container"
+    echo
+
+    exit 1
 }
 
 # Proxy the "help" command...
@@ -163,15 +179,15 @@ if [ "$1" == "docker-compose" ]; then
     fi
 
 # Proxy Composer commands to the "composer" binary on the application container...
-elif [ "$1" == "composer" ]; then
+elif [ "$1" == "pip" ]; then
     shift 1
 
     if [ "$EXEC" == "yes" ]; then
         ARGS+=(exec -u fly)
         [ ! -t 0 ] && ARGS+=(-T)
-        ARGS+=("$APP_SERVICE" "composer" "$@")
+        ARGS+=(backend pip "$@")
     else
-        sail_is_not_running
+        fly_is_not_running
     fi
 
 # Proxy manage commands to the "manage.py" binary on the application container...
@@ -184,6 +200,46 @@ elif [ "$1" == "manage" ] || [ "$1" == "man" ]; then
         ARGS+=(backend python manage.py "$@")
     else
         fly_is_not_running
+    fi
+
+# Proxy NPM commands to the "npm" binary on the application container...
+elif [ "$1" == "npm" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        # ARGS+=(exec -u fly)
+        ARGS+=(exec)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=(frontend npm "$@")
+    else
+        sail_is_not_running
+    fi
+
+# Proxy npx commands to the "npm" binary on the application container...
+elif [ "$1" == "npx" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        # ARGS+=(exec -u fly)
+        ARGS+=(exec)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=(frontend npx "$@")
+    else
+        sail_is_not_running
+    fi
+
+# Initiate a MySQL CLI terminal session within the "mysql" container...
+elif [ "$1" == "mysql" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        ARGS+=(exec)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=(db bash -c)
+        # ARGS+=("MYSQL_PWD=\${DB_PASSWORD} mysql -u \${DB_USERNAME} \${DB_DATABASE}")
+        ARGS+=("MYSQL_PWD=${DB_PASSWORD} mysql -u ${DB_USERNAME} ${DB_DATABASE}")
+    else
+        sail_is_not_running
     fi
 
 else

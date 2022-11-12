@@ -48,18 +48,11 @@ THIRDPARTY_APPS: list = [
     'django_extensions',
 ]
 
-APP_APPS: list = []
+APP_APPS: list = [
+    'users.apps.UsersConfig',
+]
 
 INSTALLED_APPS: list = DJANGO_APPS + THIRDPARTY_APPS + APP_APPS
-
-INSTALLED_APPS: list = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-]
 
 MIDDLEWARE: list = [
     'django.middleware.security.SecurityMiddleware',
@@ -96,6 +89,7 @@ WSGI_APPLICATION: str = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 # https://docs.djangoproject.com/en/4.0/topics/testing/advanced/#testing-primary-replica-configurations
 # https://docs.djangoproject.com/en/4.0/ref/settings/#mirror
+# https://gist.github.com/gipi/1327143
 
 DATABASES: dict = {
     'default': {
@@ -158,3 +152,5 @@ STATIC_URL: str = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD: str = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'users.User'
