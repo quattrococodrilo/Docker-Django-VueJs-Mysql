@@ -7,7 +7,9 @@ This is a basic project that you can use for practice.
 
 For testing I am using SQLite3, you can change it in backend.app.config.settings.DATABASES.
 
-## Instructions
+## Install
+
+`git clone `
 
 Change `GROUPID` and `USERID` in `.env` for your `uid` and `gid`.
 
@@ -22,4 +24,3 @@ Python:
 - djangorestframework
 - requests
 - shell_plus
-- ipython
