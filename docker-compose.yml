@@ -15,6 +15,9 @@ services:
   backend:
     build:
       context: ./backend
+      args:
+        - GROUPID=${GROUPID}
+        - USERID=${USERID}
     volumes:
       - ./backend/app:/code
     ports:
@@ -23,12 +26,14 @@ services:
       - DB_DATABASE=${DB_DATABASE}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
-    command: "/entry_point.sh"
+    # command: "/entry_point.sh"
     depends_on:
       - db
   frontend:
     build:
       context: ./frontend
+      args:
+        - GROUPID=${GROUPID}
     volumes:
       - ./frontend/app:/code
     ports:

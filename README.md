@@ -9,9 +9,11 @@ For testing I am using SQLite3, you can change it in backend.app.config.settings
 
 ## Instructions
 
-`docker-compose build`: creates a images.
+Change `GROUPID` and `USERID` in `.env` for your `uid` and `gid`.
 
-`docker-compose up`: start project.
+`./fly build`: creates a images.
+
+`./fly up`: start project.
 
 ## Preinstalled packages
 
